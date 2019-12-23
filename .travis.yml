@@ -12,5 +12,5 @@ before_script:
 
 script:
    - cd class-dump && ls -la
-   - mkdir arm64
-   - xcodebuild -project class-dump.xcodeproj -configuration "${CONFIG}" -sdk "${SDK}" ARCHS="${ARCHS}" ONLY_ACTIVE_ARCH=NO clean build TARGET_BUILD_DIR="./arm64"
+   - mkdir out64
+   - xcodebuild -project class-dump.xcodeproj -configuration "${CONFIG}" -sdk "${SDK}" ARCHS="${ARCHS}" ONLY_ACTIVE_ARCH=NO build TARGET_BUILD_DIR="/User/traivs/build/okanon/class-dump.build/class-dump/out64"
