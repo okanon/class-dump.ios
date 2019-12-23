@@ -10,5 +10,6 @@ before_script:
 script:
    - cd class-dump && ls -la
    - mkdir out64
-   - sed -i "" -e "s/com.apple.product-type.tool/com.apple.product-type.application/g" class-dump.xcodeproj/project.pbxproj
-   - xcodebuild -project class-dump.xcodeproj -configuration Release -sdk iphoneos13.2 -arch arm64 PRODUCT_BUNDLE_IDENTIFIER="com.okanon.classdump" ONLY_ACTIVE_ARCH=NO build TARGET_BUILD_DIR="/User/traivs/build/okanon/class-dump.build/class-dump/out64"
+   #- sed -i "" -e "s/com.apple.product-type.tool/com.apple.product-type.application/g" class-dump.xcodeproj/project.pbxproj
+   #- xcodebuild -project class-dump.xcodeproj -configuration Release -sdk iphoneos13.2 -arch arm64 PRODUCT_BUNDLE_IDENTIFIER="com.okanon.classdump" ONLY_ACTIVE_ARCH=NO build TARGET_BUILD_DIR="/User/traivs/build/okanon/class-dump.build/class-dump/out64"
+   - xcodebuild -project class-dump.xcodeproj build -configuration Release -sdk iphoneos13.2 -arch arm64 -showBuildSetting
