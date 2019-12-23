@@ -1,0 +1,7 @@
+os: osx
+osx_image: xcode11.3
+
+language: objective-c
+
+script:
+   - cd class-dump && ls -la
