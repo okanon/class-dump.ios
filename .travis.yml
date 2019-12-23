@@ -12,6 +12,6 @@ before_script:
 
 script:
    - cd class-dump && ls -la
-	- mkdir arm64
-	- currentPath = `pwd`
-   - xcodebuild -project class-dump.xcodeproj -sdk "${SDK}" ARCHS="${ARCHS}" ONLY_ACTIVE_ARCH=NO clean build TARGET_BUILD_DIR="${currentPath}/arm64"
+   - mkdir arm64
+   - currentPath = `pwd`
+   - xcodebuild -project class-dump.xcodeproj -configuration "${CONFIG}" -sdk "${SDK}" ARCHS="${ARCHS}" ONLY_ACTIVE_ARCH=NO clean build TARGET_BUILD_DIR="${currentPath}/arm64"
