@@ -1,8 +1,17 @@
-os: osx
+language: objective-c
 osx_image: xcode11.3
 
-language: objective-c
+env:
+   - ARCHS="armv7 armv7s arm64"
+   - CONFIG="Release"
+   - IOS_SDK="iphoneos"
+
+before_install:
+   - gem install xcpretty
+before_script:
+   - set -o pipefail
+
 
 script:
    - cd class-dump && ls -la
-   - ls -la /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs
+   - xcodebuild -showsdks
