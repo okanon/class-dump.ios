@@ -1,5 +1,5 @@
 
-ARCHS = arm64
+ARCHS = armv7s arm64
 DEBUG=0
 
 

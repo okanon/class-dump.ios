@@ -30,7 +30,7 @@
 
 - (NSString *)description;
 {
-    return [NSString stringWithFormat:@"%@ (%lu) depends on %@", self.identifier, self.color, self.dependancyDescription];
+    return [NSString stringWithFormat:@"%@ (%lu) depends on %@", self.identifier, (unsigned long)self.color, self.dependancyDescription];
 }
 
 #pragma mark -

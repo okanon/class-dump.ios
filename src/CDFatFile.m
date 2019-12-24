@@ -57,7 +57,12 @@
 
 - (NSString *)description;
 {
+
+#if __LP64__
     return [NSString stringWithFormat:@"<%@:%p> %lu arches", NSStringFromClass([self class]), self, [self.arches count]];
+#else
+    return [NSString stringWithFormat:@"<%@:%p> %lu arches", NSStringFromClass([self class]), self, (unsigned long)[self.arches count]];
+#endif
 }
 
 #pragma mark -

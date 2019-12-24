@@ -48,7 +48,7 @@ static NSString *CDBindTypeDescription(uint8_t type)
 {
     struct dyld_info_command _dyldInfoCommand;
     
-    NSUInteger _ptrSize;
+	 unsigned long _ptrSize;
     NSMutableDictionary *_symbolNamesByAddress;
 }
 
@@ -128,7 +128,7 @@ static NSString *CDBindTypeDescription(uint8_t type)
 - (void)logRebaseInfo;
 {
     BOOL isDone = NO;
-    NSUInteger rebaseCount = 0;
+    unsigned long rebaseCount = 0;
 
     NSArray *segments = self.machOFile.segments;
     NSParameterAssert([segments count] > 0);
@@ -235,7 +235,7 @@ static NSString *CDBindTypeDescription(uint8_t type)
         }
     }
 
-    NSLog(@"    ptr: %p, end: %p, bytes left over: %ld", ptr, end, end - ptr);
+    NSLog(@"    ptr: %p, end: %p, bytes left over: %ld", ptr, end, (long)(end - ptr));
     NSLog(@"    rebaseCount: %lu", rebaseCount);
     NSLog(@"----------------------------------------------------------------------");
 }
@@ -291,7 +291,7 @@ static NSString *CDBindTypeDescription(uint8_t type)
 - (void)logBindOps:(const uint8_t *)start end:(const uint8_t *)end isLazy:(BOOL)isLazy;
 {
     BOOL isDone = NO;
-    NSUInteger bindCount = 0;
+    unsigned long bindCount = 0;
     int64_t libraryOrdinal = 0;
     uint8_t type = 0;
     int64_t addend = 0;
@@ -421,7 +421,7 @@ static NSString *CDBindTypeDescription(uint8_t type)
     }
 
     if (debugBindOps) {
-        NSLog(@"    ptr: %p, end: %p, bytes left over: %ld", ptr, end, end - ptr);
+        NSLog(@"    ptr: %p, end: %p, bytes left over: %ld", ptr, end, (long)(end - ptr));
         NSLog(@"    bindCount: %lu", bindCount);
         NSLog(@"----------------------------------------------------------------------");
     }

@@ -49,7 +49,7 @@
 
 - (id)copyWithZone:(NSZone *)zone;
 {
-    return [[CDOCMethod alloc] initWithName:self.name typeString:self.typeString address:self.address];
+    return [[CDOCMethod alloc] initWithName:self.name typeString:self.typeString address:(unsigned long)self.address];
 }
 
 #pragma mark - Debugging
@@ -57,7 +57,7 @@
 - (NSString *)description;
 {
     return [NSString stringWithFormat:@"[%@] name: %@, typeString: %@, address: 0x%016lx",
-            NSStringFromClass([self class]), self.name, self.typeString, self.address];
+            NSStringFromClass([self class]), self.name, self.typeString, (unsigned long)self.address];
 }
 
 #pragma mark -
@@ -83,11 +83,11 @@
     if (formattedString != nil) {
         [resultString appendString:formattedString];
         [resultString appendString:@";"];
-        if (typeController.shouldShowMethodAddresses && self.address != 0) {
+        if (typeController.shouldShowMethodAddresses && (unsigned long)self.address != 0) {
             if (typeController.targetArchUses64BitABI)
-                [resultString appendFormat:@"\t// IMP=0x%016lx", self.address];
+                [resultString appendFormat:@"\t// IMP=0x%016lx", (unsigned long)self.address];
             else
-                [resultString appendFormat:@"\t// IMP=0x%08lx", self.address];
+                [resultString appendFormat:@"\t// IMP=0x%08lx", (unsigned long)self.address];
         }
     } else
         [resultString appendFormat:@"    // Error parsing type: %@, name: %@", self.typeString, self.name];

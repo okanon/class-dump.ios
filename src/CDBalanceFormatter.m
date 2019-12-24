@@ -47,7 +47,7 @@ static BOOL debug = NO;
 
         foundOpen = foundClose = NO;
         for (NSUInteger index = 0; index < 3; index++) {
-            if (debug) NSLog(@"Checking open %lu: '%@'", index, opens[index]);
+            if (debug) NSLog(@"Checking open %lu: '%@'", (unsigned long)index, opens[index]);
             if ([_scanner scanString:opens[index] intoString:NULL]) {
                 if (debug) NSLog(@"Start %@", opens[index]);
                 [_result appendSpacesIndentedToLevel:level];
@@ -63,7 +63,7 @@ static BOOL debug = NO;
                 break;
             }
 
-            if (debug) NSLog(@"Checking close %lu: '%@'", index, closes[index]);
+            if (debug) NSLog(@"Checking close %lu: '%@'", (unsigned long)index, closes[index]);
             if ([_scanner scanString:closes[index] intoString:NULL]) {
                 if ([open isEqualToString:opens[index]]) {
                     if (debug) NSLog(@"End %@", closes[index]);
@@ -76,7 +76,7 @@ static BOOL debug = NO;
         }
 
         if (foundOpen == NO && foundClose == NO) {
-            if (debug) NSLog(@"Unknown @ %lu: %@", [_scanner scanLocation], [[_scanner string] substringFromIndex:[_scanner scanLocation]]);
+            if (debug) NSLog(@"Unknown @ %lu: %@", (unsigned long)[_scanner scanLocation], [[_scanner string] substringFromIndex:[_scanner scanLocation]]);
             break;
         }
 

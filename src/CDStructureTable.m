@@ -207,14 +207,14 @@ static BOOL debugAnonStructures = NO;
     // But we'll take the max of structure and union depths in the CDTypeController anyway.
 
     for (CDStructureInfo *info in [_phase1_structureInfo allValues]) {
-        NSUInteger depth = info.type.structureDepth;
+        NSUInteger depth = (unsigned long)info.type.structureDepth;
         if (_phase1_maxDepth < depth)
             _phase1_maxDepth = depth;
     }
-    if (debug) NSLog(@"[%@] Maximum structure depth is: %lu", self.identifier, _phase1_maxDepth);
+    if (debug) NSLog(@"[%@] Maximum structure depth is: %lu", self.identifier, (unsigned long)_phase1_maxDepth);
 
     for (CDStructureInfo *info in [_phase1_structureInfo allValues]) {
-        NSNumber *key = [NSNumber numberWithUnsignedInteger:info.type.structureDepth];
+        NSNumber *key = [NSNumber numberWithUnsignedInteger:(unsigned long)info.type.structureDepth];
         NSMutableArray *group = _phase1_groupedByDepth[key];
         if (group == nil) {
             group = [[NSMutableArray alloc] init];
@@ -299,7 +299,7 @@ static BOOL debugAnonStructures = NO;
                 //NSLog(@"new: %@", [[info type] typeString]);
                 if ([combined.type canMergeWithType:info.type]) {
                     [combined.type mergeWithType:info.type];
-                    [combined addReferenceCount:info.referenceCount];
+                    [combined addReferenceCount:(unsigned long)info.referenceCount];
 #if 0
                     if (info.isUsedInMethod)
                         combined.isUsedInMethod = YES;
@@ -320,7 +320,7 @@ static BOOL debugAnonStructures = NO;
                 [_phase2_nameExceptions addObject:combined];
                 [_phase2_namedStructureInfo removeObjectForKey:key];
                 if (debugNamedStructures) {
-                    NSLog(@"[%@] %s, WARNING: depth %lu name %@ has conflict(?) at lower level", self.identifier, sel_getName(_cmd), depth, key);
+                    NSLog(@"[%@] %s, WARNING: depth %lu name %@ has conflict(?) at lower level", self.identifier, sel_getName(_cmd), (unsigned long)depth, key);
                     NSLog(@"previous: %@", [_phase2_namedStructureInfo[key] shortDescription]);
                     NSLog(@" current: %@", [combined shortDescription]);
                 }
@@ -353,7 +353,7 @@ static BOOL debugAnonStructures = NO;
                 //NSLog(@"new: %@", [info shortDescription]);
                 if ([combined.type canMergeWithType:info.type]) {
                     [combined.type mergeWithType:info.type];
-                    [combined addReferenceCount:info.referenceCount];
+                    [combined addReferenceCount:(unsigned long)info.referenceCount];
 #if 0
                     if (info.isUsedInMethod)
                         combined.isUsedInMethod = YES;
@@ -372,7 +372,7 @@ static BOOL debugAnonStructures = NO;
         if (combined != nil) {
             if (_phase2_anonStructureInfo[key] != nil) {
                 // This shouldn't happen, but the named case might.
-                NSLog(@"[%@] %s, WARNING: depth %lu type %@ has conflict(?) at lower level", self.identifier, sel_getName(_cmd), depth, key);
+                NSLog(@"[%@] %s, WARNING: depth %lu type %@ has conflict(?) at lower level", self.identifier, sel_getName(_cmd), (unsigned long)depth, key);
                 NSLog(@"previous: %@", [_phase2_anonStructureInfo[key] shortDescription]);
                 NSLog(@" current: %@", [combined shortDescription]);
             }
@@ -479,7 +479,7 @@ static BOOL debugAnonStructures = NO;
     //NSLog(@"[%@]  > %s", identifier, sel_getName(_cmd));
 
     for (CDStructureInfo *info in [[_phase0_structureInfo allValues] sortedArrayUsingSelector:@selector(ascendingCompareByStructureDepth:)]) {
-        [self phase3RegisterStructure:info.type count:info.referenceCount usedInMethod:info.isUsedInMethod];
+        [self phase3RegisterStructure:info.type count:(unsigned long)info.referenceCount usedInMethod:info.isUsedInMethod];
     }
 
     //NSLog(@"[%@] <  %s", identifier, sel_getName(_cmd));
@@ -502,7 +502,7 @@ static BOOL debugAnonStructures = NO;
             if (isUsedInMethod)
                 info.isUsedInMethod = YES;
 
-            if (info.referenceCount == referenceCount) { // i.e. the first time we've encounter this struct
+            if ((unsigned long)info.referenceCount == referenceCount) { // i.e. the first time we've encounter this struct
                 // And then... add 1 reference for each substructure, stopping recursion when we've encountered a previous structure
                 [structure phase3RegisterMembersWithTypeController:self.typeController];
             }
@@ -535,7 +535,7 @@ static BOOL debugAnonStructures = NO;
                 if (isUsedInMethod)
                     [_phase3_inMethodNameExceptions addObject:name];
 
-                if (info.referenceCount == referenceCount) { // i.e. the first time we've encounter this struct
+                if ((unsigned long)info.referenceCount == referenceCount) { // i.e. the first time we've encounter this struct
                     // And then... add 1 reference for each substructure, stopping recursion when we've encountered a previous structure
                     [structure phase3RegisterMembersWithTypeController:self.typeController];
                 }
@@ -565,7 +565,7 @@ static BOOL debugAnonStructures = NO;
                 if (isUsedInMethod)
                     info.isUsedInMethod = YES;
                 if ([_debugNames containsObject:name]) {
-                    NSLog(@"[%@] %s, added ref count: %lu, isUsedInMethod: %u", self.identifier, sel_getName(_cmd), referenceCount, isUsedInMethod);
+                    NSLog(@"[%@] %s, added ref count: %lu, isUsedInMethod: %u", self.identifier, sel_getName(_cmd), (unsigned long)referenceCount, isUsedInMethod);
                     NSLog(@"[%@] %s, info after: %@", self.identifier, sel_getName(_cmd), [info shortDescription]);
                 }
             }
@@ -692,7 +692,7 @@ static BOOL debugAnonStructures = NO;
             if ([typeFormatter.typeController shouldShowName:[type.typeName description]]) {
                 if (debugNamedStructures) {
                     [resultString appendFormat:@"// would normally show? %u\n", shouldShow];
-                    [resultString appendFormat:@"// depth: %lu, ref count: %lu, used in method? %u\n", info.type.structureDepth, info.referenceCount, info.isUsedInMethod];
+                    [resultString appendFormat:@"// depth: %lu, ref count: %lu, used in method? %u\n", (unsigned long)info.type.structureDepth, (unsigned long)info.referenceCount, info.isUsedInMethod];
                 }
                 NSString *formattedString = [typeFormatter formatVariable:nil type:type];
                 if (formattedString != nil) {
@@ -720,7 +720,7 @@ static BOOL debugAnonStructures = NO;
             CDType *type = info.type;
             if ([typeFormatter.typeController shouldShowName:[type.typeName description]]) {
                 if (debugNamedStructures) {
-                    [resultString appendFormat:@"// depth: %lu, ref count: %lu, used in method? %u\n", info.type.structureDepth, info.referenceCount, info.isUsedInMethod];
+                    [resultString appendFormat:@"// depth: %lu, ref count: %lu, used in method? %u\n", (unsigned long)info.type.structureDepth, (unsigned long)info.referenceCount, info.isUsedInMethod];
                     //[resultString appendFormat:@"// typedefName: %@\n", [info typedefName]];
                 }
                 NSString *formattedString = [typeFormatter formatVariable:nil type:type];
@@ -759,7 +759,7 @@ static BOOL debugAnonStructures = NO;
             if (debugAnonStructures) {
                 [resultString appendFormat:@"// would normally show? %u\n", shouldShow];
                 [resultString appendFormat:@"// %@\n", info.type.reallyBareTypeString];
-                [resultString appendFormat:@"// depth: %lu, ref: %lu, used in method? %u\n", info.type.structureDepth, info.referenceCount, info.isUsedInMethod];
+                [resultString appendFormat:@"// depth: %lu, ref: %lu, used in method? %u\n", (unsigned long)info.type.structureDepth, (unsigned long)info.referenceCount, info.isUsedInMethod];
             }
 
             NSString *formattedString = [typeFormatter formatVariable:nil type:info.type];
@@ -785,7 +785,7 @@ static BOOL debugAnonStructures = NO;
 
             if (debugAnonStructures) {
                 [resultString appendFormat:@"// %@\n", info.type.reallyBareTypeString];
-                [resultString appendFormat:@"// depth: %lu, ref: %lu, used in method? %u\n", info.type.structureDepth, info.referenceCount, info.isUsedInMethod];
+                [resultString appendFormat:@"// depth: %lu, ref: %lu, used in method? %u\n", (unsigned long)info.type.structureDepth, (unsigned long)info.referenceCount, info.isUsedInMethod];
             }
 
             NSString *formattedString = [typeFormatter formatVariable:nil type:info.type];
@@ -812,7 +812,7 @@ static BOOL debugAnonStructures = NO;
 
             if (debugAnonStructures) {
                 [resultString appendFormat:@"// %@\n", info.type.reallyBareTypeString];
-                [resultString appendFormat:@"// depth: %lu, ref: %lu, used in method? %u\n", info.type.structureDepth, info.referenceCount, info.isUsedInMethod];
+                [resultString appendFormat:@"// depth: %lu, ref: %lu, used in method? %u\n", (unsigned long)info.type.structureDepth, (unsigned long)info.referenceCount, info.isUsedInMethod];
             }
 
             NSString *formattedString = [typeFormatter formatVariable:nil type:info.type];
@@ -829,7 +829,7 @@ static BOOL debugAnonStructures = NO;
     return (info == nil)
         || (info.isUsedInMethod == NO
             && (info.type.isTemplateType == NO || info.isUsedInMethod == NO)
-            && info.referenceCount < 2
+            && (unsigned long)info.referenceCount < 2
             && (([info.name hasPrefix:@"_"] && [info.name hasUnderscoreCapitalPrefix] == NO) // TODO: Don't need the first hasPrefix check now.
                 || [@"?" isEqualToString:info.name]));
 }

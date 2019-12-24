@@ -125,7 +125,7 @@
                     
                     if (segment.canDecrypt == NO) {
                         [self.resultString appendFormat:@"//         Load command %lu, segment encryption: %@\n",
-                         index, CDSegmentEncryptionTypeName(segment.encryptionType)];
+                         (unsigned long)index, CDSegmentEncryptionTypeName(segment.encryptionType)];
                     }
                 }
             }];

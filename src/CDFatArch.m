@@ -28,12 +28,12 @@
 {
     if ((self = [super init])) {
         _machOFile = machOFile;
-        NSParameterAssert([machOFile.data length] < 0x100000000);
+        NSParameterAssert((unsigned long long)[machOFile.data length] < 0x100000000);
         
         _cputype    = _machOFile.cputype;
         _cpusubtype = _machOFile.cpusubtype;
         _offset     = 0; // Would be filled in when this is written to disk
-        _size       = (uint32_t)[_machOFile.data length];
+        _size       = (unsigned long long)[_machOFile.data length];
         _align      = 12; // 2**12 = 4096 (0x1000)
     }
     

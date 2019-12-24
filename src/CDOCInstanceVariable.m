@@ -48,7 +48,7 @@
 - (NSString *)description;
 {
     return [NSString stringWithFormat:@"[%@] name: %@, typeString: '%@', offset: %lu",
-            NSStringFromClass([self class]), self.name, self.typeString, self.offset];
+            NSStringFromClass([self class]), self.name, self.typeString, (unsigned long)self.offset];
 }
 
 #pragma mark -
@@ -85,7 +85,7 @@
         [resultString appendString:formattedString];
         [resultString appendString:@";"];
         if ([typeController shouldShowIvarOffsets]) {
-            [resultString appendFormat:@"\t// %ld = 0x%lx", self.offset, self.offset];
+            [resultString appendFormat:@"\t// %lu = 0x%lx", (unsigned long)self.offset, (unsigned long)self.offset];
         }
     }
 }

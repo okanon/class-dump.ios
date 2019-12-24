@@ -260,7 +260,7 @@ static BOOL debug = NO;
     if (maxDepth < self.unionTable.phase1_maxDepth)
         maxDepth = self.unionTable.phase1_maxDepth;
 
-    if (debug) NSLog(@"max structure/union depth is: %lu", maxDepth);
+    if (debug) NSLog(@"max structure/union depth is: %lu", (unsigned long)maxDepth);
 
     for (NSUInteger depth = 1; depth <= maxDepth; depth++) {
         [self.structureTable runPhase2AtDepth:depth];

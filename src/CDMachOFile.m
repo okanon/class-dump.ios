@@ -187,7 +187,7 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
 {
     return [NSString stringWithFormat:@"<%@:%p> magic: 0x%08x, cputype: %x, cpusubtype: %x, filetype: %d, ncmds: %ld, sizeofcmds: %d, flags: 0x%x, uses64BitABI? %d, filename: %@, data: %p",
             NSStringFromClass([self class]), self,
-            [self magic], [self cputype], [self cpusubtype], [self filetype], [_loadCommands count], 0, [self flags], self.uses64BitABI,
+            [self magic], [self cputype], [self cpusubtype], [self filetype], (unsigned long)[_loadCommands count], 0, [self flags], self.uses64BitABI,
             self.filename, self.data];
 }
 
@@ -331,7 +331,7 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
 
     CDLCSegment *segment = [self segmentContainingAddress:address];
     if (segment == nil) {
-        NSLog(@"Error: Cannot find offset for address 0x%08lx in stringAtAddress:", address);
+        NSLog(@"Error: Cannot find offset for address 0x%08lx in stringAtAddress:", (unsigned long)address);
         exit(5);
         return nil;
     }
@@ -362,7 +362,7 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
 
     CDLCSegment *segment = [self segmentContainingAddress:address];
     if (segment == nil) {
-        NSLog(@"Error: Cannot find offset for address 0x%08lx in dataOffsetForAddress:", address);
+        NSLog(@"Error: Cannot find offset for address 0x%08lx in dataOffsetForAddress:", (unsigned long)address);
         exit(5);
     }
 
@@ -374,7 +374,7 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
 #if 0
     NSLog(@"---------->");
     NSLog(@"segment is: %@", segment);
-    NSLog(@"address: 0x%08x", address);
+    NSLog(@"address: 0x%08x", (unsigned long)address);
     NSLog(@"CDFile offset:    0x%08x", offset);
     NSLog(@"file off for address: 0x%08x", [segment fileOffsetForAddress:address]);
     NSLog(@"data offset:      0x%08x", offset + [segment fileOffsetForAddress:address]);
@@ -440,7 +440,7 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
     NSMutableString *resultString = [NSMutableString string];
     NSUInteger count = [_loadCommands count];
     for (NSUInteger index = 0; index < count; index++) {
-        [resultString appendFormat:@"Load command %lu\n", index];
+        [resultString appendFormat:@"Load command %lu\n", (unsigned long)index];
         CDLoadCommand *loadCommand = _loadCommands[index];
         [loadCommand appendToString:resultString verbose:isVerbose];
         [resultString appendString:@"\n"];
@@ -458,10 +458,10 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
     if (isVerbose)
         [resultString appendFormat:@"%11@ %7@ %10u   %8@ %5lu %10u %@\n",
                       CDMachOFileMagicNumberDescription([self magic]), [self archName], [self cpusubtype],
-                      [self filetypeDescription], [_loadCommands count], 0, [self flagDescription]];
+                      [self filetypeDescription], (unsigned long)[_loadCommands count], 0, [self flagDescription]];
     else
         [resultString appendFormat:@" 0x%08x %7u %10u   %8u %5lu %10u 0x%08x\n",
-                      [self magic], [self cputype], [self cpusubtype], [self filetype], [_loadCommands count], 0, [self flags]];
+                      [self magic], [self cputype], [self cpusubtype], [self filetype], (unsigned long)[_loadCommands count], 0, [self flags]];
     [resultString appendString:@"\n"];
 
     return resultString;
@@ -487,20 +487,20 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
     if (address != 0) {
         CDLCSegment *segment = [self segmentContainingAddress:address];
         if (segment == nil) {
-            NSLog(@"No segment contains address: %016lx", address);
+            NSLog(@"No segment contains address: %016lx", (unsigned long)address);
         } else {
-            //NSLog(@"Found address %016lx in segment, sections= %@", address, [segment sections]);
+            //NSLog(@"Found address %016lx in segment, sections= %@", (unsigned long)address, [segment sections]);
             CDSection *section = [segment sectionContainingAddress:address];
             if (section == nil) {
-                NSLog(@"Found address %016lx in segment %@, but not in a section", address, [segment name]);
+                NSLog(@"Found address %016lx in segment %@, but not in a section", (unsigned long)address, [segment name]);
             } else {
-                NSLog(@"Found address %016lx in segment %@, section %@", address, [segment name], [section sectionName]);
+                NSLog(@"Found address %016lx in segment %@, section %@", (unsigned long)address, [segment name], [section sectionName]);
             }
         }
 
         NSString *str = [self stringAtAddress:address];
-        NSLog(@"      address %016lx as a string: '%@' (length %lu)", address, str, [str length]);
-        NSLog(@"      address %016lx data offset: %lu", address, [self dataOffsetForAddress:address]);
+        NSLog(@"      address %016lx as a string: '%@' (length %lu)", (unsigned long)address, str, (unsigned long)[str length]);
+        NSLog(@"      address %016lx data offset: %lu", (unsigned long)address, (unsigned long)[self dataOffsetForAddress:address]);
     }
 }
 
@@ -524,7 +524,7 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
         if ([str hasPrefix:ObjCClassSymbolPrefix]) {
             return [str substringFromIndex:[ObjCClassSymbolPrefix length]];
         } else {
-            NSLog(@"Warning: Unknown prefix on symbol name... %@ (addr %lx)", str, address);
+            NSLog(@"Warning: Unknown prefix on symbol name... %@ (addr %lx)", str, (unsigned long)address);
             return str;
         }
     }
@@ -553,7 +553,7 @@ static NSString *CDMachOFileMagicNumberDescription(uint32_t magic)
         if ([str hasPrefix:ObjCClassSymbolPrefix]) {
             return [str substringFromIndex:[ObjCClassSymbolPrefix length]];
         } else {
-            NSLog(@"Warning: Unknown prefix on symbol name... %@ (addr %lx)", str, address);
+            NSLog(@"Warning: Unknown prefix on symbol name... %@ (addr %lx)", str, (unsigned long)address);
             return str;
         }
     }

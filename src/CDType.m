@@ -711,17 +711,17 @@ static BOOL debugMerge = NO;
 
             // It seems to be okay if one of them didn't have a name
             if (thisTypeName != nil && otherTypeName != nil && [thisTypeName isEqual:otherTypeName] == NO) {
-                if (debugMerge) NSLog(@"%s, typeName mismatch on member %lu", sel_getName(_cmd), index);
+                if (debugMerge) NSLog(@"%s, typeName mismatch on member %lu", sel_getName(_cmd), (unsigned long)index);
                 return NO;
             }
 
             if (thisVariableName != nil && otherVariableName != nil && [thisVariableName isEqual:otherVariableName] == NO) {
-                if (debugMerge) NSLog(@"%s, variableName mismatch on member %lu", sel_getName(_cmd), index);
+                if (debugMerge) NSLog(@"%s, variableName mismatch on member %lu", sel_getName(_cmd), (unsigned long)index);
                 return NO;
             }
 
             if ([thisMember canMergeWithType:otherMember] == NO) {
-                if (debugMerge) NSLog(@"%s, Can't merge member %lu", sel_getName(_cmd), index);
+                if (debugMerge) NSLog(@"%s, Can't merge member %lu", sel_getName(_cmd), (unsigned long)index);
                 return NO;
             }
         }
@@ -782,7 +782,7 @@ static BOOL debugMerge = NO;
         //[self setMembers:otherMembers];
     } else if (count != otherCount) {
         // Not so bad after all.  Even kind of common.  Consider _flags.
-        NSLog(@"Warning: Types have different number of members.  This is bad. (%lu vs %lu)", count, otherCount);
+        NSLog(@"Warning: Types have different number of members.  This is bad. (%lu vs %lu)", (unsigned long)count, (unsigned long)otherCount);
         NSLog(@"%@ vs %@", self.typeString, otherType.typeString);
         return;
     }
@@ -796,8 +796,8 @@ static BOOL debugMerge = NO;
         CDTypeName *otherTypeName = otherMember.typeName;
         NSString *thisVariableName = thisMember.variableName;
         NSString *otherVariableName = otherMember.variableName;
-        //NSLog(@"%d: type: %@ vs %@", index, thisTypeName, otherTypeName);
-        //NSLog(@"%d: vari: %@ vs %@", index, thisVariableName, otherVariableName);
+        //NSLog(@"%d: type: %@ vs %@", (unsigned long)index, thisTypeName, otherTypeName);
+        //NSLog(@"%d: vari: %@ vs %@", (unsigned long)index, thisVariableName, otherVariableName);
 
         if ((thisTypeName == nil && otherTypeName != nil) || (thisTypeName != nil && otherTypeName == nil)) {
             ; // It seems to be okay if one of them didn't have a name
@@ -842,7 +842,7 @@ static BOOL debugMerge = NO;
             if (member.variableName == nil && member.primitiveType != 'b') {
                 NSString *name;
                 do {
-                    name = [NSString stringWithFormat:@"_field%lu", number++];
+                    name = [NSString stringWithFormat:@"_field%lu", (unsigned long)number++];
                 } while ([usedNames containsObject:name]);
                 member.variableName = name;
             }
