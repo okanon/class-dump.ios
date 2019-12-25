@@ -1,2 +1,7 @@
 # class-dump.build
-iOS ARM64 class-dump
+iOS ARMv7, ARMv7s and ARM64 class-dump
+
+### Build
+```
+make package install
+```

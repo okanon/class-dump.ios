@@ -1,0 +1,12 @@
+Package: class-dump3.5
+Architecture: iphoneos-arm
+Version: 3.5
+Section: Development
+Maintainer: okanon <flat.cydia37jins.pc@gmail.com>
+Depends: firmware (>= 3.0)
+Homepage: https://twitter.com/@cxx_flags
+Description: class-dump is a command-line utility for examining the Objective-C runtime information stored in Mach-O files. It generates declarations for the classes, categories and protocols. This is the same information provided by using ‘otool -ov’, but presented as normal Objective-C declarations, so it is much more compact and readable. 
+Name: class-dump
+Dev: okanon
+Author: okanon <flat.cydia37jins.pc@gmail.com>
+
