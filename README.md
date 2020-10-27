@@ -1,5 +1,5 @@
 # class-dump.build
-iOS ARMv7, ARMv7s and ARM64 class-dump
+iOS ARM64 and ARM64E class-dump
 
 ### Build
 ```
