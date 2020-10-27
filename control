@@ -1,6 +1,6 @@
-Package: class-dump3.5
+Package: class-dump
 Architecture: iphoneos-arm
-Version: 3.5
+Version: 3.5.1
 Section: Development
 Maintainer: okanon <flat.cydia37jins.pc@gmail.com>
 Depends: firmware (>= 3.0)
